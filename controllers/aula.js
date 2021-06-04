@@ -20,17 +20,19 @@ module.exports = {
         const cpf_aluno = util.formataCPF(req.body.cpf_aluno)
         const placa = req.body.placa
 
+        const placaUP = placa.toUpperCase()
+
         const confInstrutor = await Aula.findInstrutor(cpf_instrutor)
         const confAluno = await Aula.findAluno(cpf_aluno)
-        const confVeiculo = await Aula.findVeiculo(placa)
+        const confVeiculo = await Aula.findVeiculo(placaUP)
 
-        if (confInstrutor.cpf != cpf_instrutor || confAluno.cpf != cpf_aluno || confVeiculo.placa != placa) {
+        if (confInstrutor.cpf != cpf_instrutor || confAluno.cpf != cpf_aluno || confVeiculo.placa != placaUP) {
             res.send("Instrutor, aluno ou Veículo não está cadastrado")
         } else {
 
             const Instrutor = await Aula.findInstrutor(cpf_instrutor)
             const Aluno = await Aula.findAluno(cpf_aluno)
-            const Veiculo = await Aula.findVeiculo(placa)
+            const Veiculo = await Aula.findVeiculo(placaUP)
 
             console.log(req.body.data)
             console.log(req.body.hora)
@@ -41,15 +43,19 @@ module.exports = {
 
             // Verificações
 
-            const testeHora = verificaHora(data_hora)
+            const testeHora = util.verificaHora(data_hora)
+
+            console.log(Aluno.categoria)
 
             const catSeparadaInstrutor = util.separaCategoria(Instrutor.categoria)
             const catSeparadaAluno = util.separaCategoria(Aluno.categoria)
 
             const catArrayInstrutor = util.geraArray(catSeparadaInstrutor.Veiculo)
 
+            console.log("Olhando categoria do aluno " + catSeparadaAluno.Veiculo + " " + catSeparadaAluno.Moto)
+
             const catComumVeiculo = util.elementoComum(catArrayInstrutor, Veiculo.categoria)
-            const catComumAluno = util.elementoComum(catArrayInstrutor, catSeparadaAluno)
+            const catComumAluno = util.elementoComum(catArrayInstrutor, catSeparadaAluno.Veiculo)
 
             const conferindoAgenda = await Aula.confereAgenda(Veiculo.id, Instrutor.id, Aluno.id, data_hora)
             
@@ -64,7 +70,7 @@ module.exports = {
                     if (!testeHora) {
                         return res.send("Horário não permitido")
                     } else {
-                        if (!conferindoAgenda) {
+                        if (conferindoAgenda) {
                             return res.send("Aluno, Instrutor ou Veículo já tem aula nesse horário")
                         } else {
                             await Aula.createAula({
@@ -86,17 +92,21 @@ module.exports = {
         const cpf_aluno = util.formataCPF(req.body.cpf_aluno)
         const placa = req.body.placa
 
+        const placaUP = placa.toUpperCase()
+
+        console.log("Placa maiscula " + placaUP)
+
         const confInstrutor = await Aula.findInstrutor(cpf_instrutor)
         const confAluno = await Aula.findAluno(cpf_aluno)
-        const confVeiculo = await Aula.findVeiculo(placa)
+        const confVeiculo = await Aula.findVeiculo(placaUP)
 
-        if (confInstrutor.cpf != cpf_instrutor || confAluno.cpf != cpf_aluno || confVeiculo.placa != placa) {
+        if (confInstrutor.cpf != cpf_instrutor || confAluno.cpf != cpf_aluno || confVeiculo.placa != placaUP) {
             res.send("Instrutor, aluno ou Veículo não está cadastrado")
         } else {
 
             const Instrutor = await Aula.findInstrutor(cpf_instrutor)
             const Aluno = await Aula.findAluno(cpf_aluno)
-            const Veiculo = await Aula.findVeiculo(placa)
+            const Veiculo = await Aula.findVeiculo(placaUP)
 
             console.log(req.body.data)
             console.log(req.body.hora)
@@ -107,26 +117,33 @@ module.exports = {
 
             // Verificações
 
-            const testeHora = verificaHora(data_hora)
+            const testeHora = util.verificaHora(data_hora)
 
             const catSeparadaInstrutor = util.separaCategoria(Instrutor.categoria)
+            const catSeparadaVeiculo = util.separaCategoria(Veiculo.categoria)
+            const catSeparadaAluno = util.separaCategoria(Aluno.categoria)
+
+            console.log("Categoria Instrutor: " + catSeparadaInstrutor.Moto)
+            console.log("Categoria Veiculo: " + catSeparadaVeiculo)
+            console.log("Categoria Aluno: " + catSeparadaAluno.Moto)
 
             const conferindoAgenda = await Aula.confereAgenda(Veiculo.id, Instrutor.id, Aluno.id, data_hora)
             
             // Verificações
 
-            if (catSeparadaInstrutor.Moto != Veiculo.categoria) {
+            if (catSeparadaInstrutor.Moto != catSeparadaVeiculo) {
                 return res.send("Categoria do Instrutor e do Veículo não estão de acordo")
             } else {
-                if (catSeparadaInstrutor.Moto != Aluno.categoria) {
+                if (catSeparadaInstrutor.Moto != catSeparadaAluno.Moto) {
                     return res.send("Categoria do Instrutor e do Aluno não estão de acordo")
                 } else {
                     if (!testeHora) {
                         return res.send("Horário não permitido")
                     } else {
-                        if (!conferindoAgenda) {
+                        if (conferindoAgenda) {
                             return res.send("Aluno, Instrutor ou Veículo já tem aula nesse horário")
                         } else {
+                            
                             await Aula.createAula({
                                 veiculos_id: Veiculo.id,
                                 instrutores_id: Instrutor.id,
@@ -157,7 +174,7 @@ module.exports = {
 
         const presenca = util.verificaPresenca(dados.data_hora)
 
-        if (presenca) {
+        if (!presenca) {
             await Aula.insertPresenca(req.params.id)
             return res.send("Presença confirmada")
         } else {

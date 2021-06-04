@@ -28,3 +28,10 @@ const p = 'OVH1506'
 const pMod = Number(p)
 
 console.log(d.length < 10 || p.length != 7 )
+
+
+const st = 'ovh3010'
+
+const stUP = st.toUpperCase()
+
+console.log(stUP)

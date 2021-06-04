@@ -1,5 +1,6 @@
 const Veiculo = require('../models/veiculo')
 const Aula = require('../models/aula')
+const util = require('../utils')
 
 module.exports = {
     async show(req, res) {
@@ -9,9 +10,17 @@ module.exports = {
     },
     async create(req, res) {
 
-        const conferencia = await Veiculo.findPlaca(req.body.placa)
+        const validaPlaca = util.testaPlaca(req.body.placa)
 
-        if (conferencia == req.body.placa) {
+        if (validaPlaca) {
+            
+        const placa = req.body.placa
+
+        const placaUP = placa.toUpperCase()
+
+        const conferencia = await Veiculo.findPlaca(placaUP) 
+
+        if (conferencia.placa == placaUP) {
             return res.send("Veiculo já cadastrado")
         } else {
 
@@ -23,7 +32,7 @@ module.exports = {
             } else {
                 try {
                     await Veiculo.create({
-                        placa: req.body.placa,
+                        placa: placaUP,
                         descricao: req.body.descricao,
                         categoria: req.body.cat
                     })
@@ -33,7 +42,9 @@ module.exports = {
                     throw err
                 }
             }
-
+        }
+        } else {
+            return res.send("Veículo não existe")
         }
     },
     async atualiza(req, res) {

@@ -44,7 +44,7 @@ const initDb = {
             nome,
             categoria
             ) VALUES (
-                "11111111125",
+                "13603623711",
                 "Vinicius",
                 "AB"
             )`)
@@ -58,7 +58,7 @@ const initDb = {
             categoria
         ) VALUES (
             "OMN3060",
-            "GOL",
+            "GOL PRETO 4 PORTAS",
             "B"
         )`)
 
@@ -67,7 +67,7 @@ const initDb = {
             nome,
             categoria
         ) VALUES (
-            "11123547891",
+            "92338579054",
             "Fabricio Correa",
             "AD"
         )`)

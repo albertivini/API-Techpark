@@ -29,7 +29,11 @@ module.exports = {
 
         await db.close()
 
-        return veiculo
+        if (veiculo == undefined) {
+            return false
+        } else {
+            return veiculo
+        }
     },
     async findInstrutor(cpf) {
         const db = await Database()
@@ -40,7 +44,11 @@ module.exports = {
 
         console.log("Find instrutor: " + instrutor)
 
-        return instrutor
+        if (instrutor == undefined) {
+            return false
+        } else {
+            return instrutor
+        }
     },
     async findAluno(cpf) {
         const db = await Database()
@@ -49,7 +57,11 @@ module.exports = {
 
         await db.close()
 
-        return aluno
+        if (aluno == undefined) {
+            return false
+        } else {
+            return aluno
+        }
     },
     async createAula (cadastroAula) {
         const db = await Database()
@@ -63,7 +75,7 @@ module.exports = {
             ${cadastroAula.veiculos_id},
             ${cadastroAula.instrutores_id},
             ${cadastroAula.alunos_id},
-            ${cadastroAula.data} 
+            "${cadastroAula.data}" 
         )`)
 
         db.close()
