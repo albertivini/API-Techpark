@@ -172,7 +172,7 @@ module.exports = {
 
         const presenca = util.verificaPresenca(dados.data_hora)
 
-        if (presenca) {
+        if (!presenca) {
             await Aula.insertPresenca(req.params.id)
             return res.send("Presença confirmada")
         } else {
