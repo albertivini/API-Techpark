@@ -13,42 +13,52 @@ module.exports = {
 
     async create (req, res) {
 
-        const cpfFormatado = util.formataCPF(req.body.cpf)
+        const validaCPF = util.testaCPF(req.body.cpf)
 
-        const conferencia = await Aluno.findCPF(cpfFormatado)
+        if(validaCPF) {
+            const cpfFormatado = util.formataCPF(req.body.cpf)
 
-        console.log("Conferencia: " + conferencia.cpf)
-
-        if(conferencia == cpfFormatado) {
-            return res.send("Aluno já cadastrado")
-        } else {
-
-            const testenome = req.body.nome
-            const testecpf = req.body.cpf
-
-            if (testenome.length <= 10 || testecpf.length != 11 ) {
-                return res.send("Nome ou CPF inválidos")
+            const conferencia = await Aluno.findCPF(cpfFormatado)
+    
+            console.log("Conferencia: " + conferencia.cpf)
+    
+            console.log("Testando conferencia sem .cpf " + conferencia)
+    
+            if(conferencia.cpf == cpfFormatado) {
+                return res.send("Aluno já cadastrado")
             } else {
-                try {
-                    await Aluno.create({
-                        cpf: req.body.cpf,
-                        nome: req.body.nome,
-                        categoria: req.body.cat
-                    })
-        
-                    cpf = req.body.cpf
-        
-                    console.log(cpf)
-        
-                    await Aluno.mask(cpf)
-        
-                    return res.redirect('/aluno')
-                } catch (err) {
-
+    
+                const testenome = req.body.nome
+                const testecpf = req.body.cpf
+    
+                if (testenome.length <= 10 || testecpf.length != 11 ) {
+                    return res.send("Nome ou CPF inválidos")
+                } else {
+                    try {
+                        await Aluno.create({
+                            cpf: req.body.cpf,
+                            nome: req.body.nome,
+                            categoria: req.body.cat
+                        })
+            
+                        cpf = req.body.cpf
+            
+                        console.log(cpf)
+            
+                        await Aluno.mask(cpf)
+            
+                        return res.redirect('/aluno')
+                    } catch (err) {
+    
+                    }
                 }
+    
             }
-
+        } else {
+            return res.send(" CPF não existe ")
         }
+
+
     },
 
     async atualiza (req, res) {

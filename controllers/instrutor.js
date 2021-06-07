@@ -11,38 +11,45 @@ module.exports = {
     },
     async create (req, res) {
 
-        const cpfFormatado = util.formataCPF(req.body.cpf)
+        const validaCPF = util.testaCPF(req.body.cpf)
 
-        const conferencia = await Instrutor.findCPF(cpfFormatado)
+        if (validaCPF) {
 
-        console.log("Conferencia: " + conferencia)
+            const cpfFormatado = util.formataCPF(req.body.cpf)
 
-        if(conferencia == cpfFormatado) {
-            return res.send("Instrutor já cadastrado")
-        } else {
-
-            const testenome = req.body.nome
-            const testecpf = req.body.cpf
-
-            if (testenome.length <= 10 || testecpf.length != 11 ) {
-                res.send("Nome ou CPF inválidos")
+            const conferencia = await Instrutor.findCPF(cpfFormatado)
+    
+            console.log("Conferencia: " + conferencia)
+    
+            if(conferencia.cpf == cpfFormatado) {
+                return res.send("Instrutor já cadastrado")
             } else {
-                try {
-                    await Instrutor.create({
-                        cpf: req.body.cpf,
-                        nome: req.body.nome,
-                        categoria: req.body.cat
-                    })
-        
-                    const cpf = req.body.cpf
-        
-                    await Instrutor.mask(cpf)
-        
-                    return res.send("Instrutor cadastrado com sucesso")
-                } catch (err) {
-                    throw err
+    
+                const testenome = req.body.nome
+                const testecpf = req.body.cpf
+    
+                if (testenome.length <= 10 || testecpf.length != 11 ) {
+                    res.send("Nome ou CPF inválidos")
+                } else {
+                    try {
+                        await Instrutor.create({
+                            cpf: req.body.cpf,
+                            nome: req.body.nome,
+                            categoria: req.body.cat
+                        })
+            
+                        const cpf = req.body.cpf
+            
+                        await Instrutor.mask(cpf)
+            
+                        return res.send("Instrutor cadastrado com sucesso")
+                    } catch (err) {
+                        throw err
+                    }
                 }
             }
+        } else {
+            return res.send("CPF não existe")
         }
     },
     async atualiza (req, res) {
