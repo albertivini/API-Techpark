@@ -11,6 +11,7 @@ module.exports = {
 
         return data
     },
+
     async findId (id) {
 
         const db = await Database()
@@ -21,6 +22,7 @@ module.exports = {
 
         return data
     },
+
     async findVeiculo(placa) {
 
         const db = await Database()
@@ -35,6 +37,7 @@ module.exports = {
             return veiculo
         }
     },
+
     async findInstrutor(cpf) {
         const db = await Database()
 
@@ -42,14 +45,13 @@ module.exports = {
 
         await db.close()
 
-        console.log("Find instrutor: " + instrutor)
-
         if (instrutor == undefined) {
             return false
         } else {
             return instrutor
         }
     },
+
     async findAluno(cpf) {
         const db = await Database()
 
@@ -63,6 +65,7 @@ module.exports = {
             return aluno
         }
     },
+
     async createAula (cadastroAula) {
         const db = await Database()
 
@@ -80,6 +83,7 @@ module.exports = {
 
         db.close()
     },
+
     async findInstrutorUsingId (id) {
         const db = await Database()
 
@@ -89,6 +93,7 @@ module.exports = {
 
         return instrutor
     },
+
     async findAlunoUsingId (id) {
         const db = await Database()
 
@@ -98,6 +103,7 @@ module.exports = {
 
         return aluno 
     },
+
     async findVeiculoUsingId (id) {
         const db = await Database()
 
@@ -107,6 +113,7 @@ module.exports = {
 
         return veiculo
     },
+
     async insertPresenca (id) {
         const db = await Database()
         
@@ -116,6 +123,7 @@ module.exports = {
 
         db.close()
     },
+
     async findAlunoAtAula (id) {
         const db = await Database()
 
@@ -129,6 +137,7 @@ module.exports = {
             return true
         }
     },
+
     async findInstrutorAtAula (id) {
         const db = await Database()
 
@@ -142,6 +151,7 @@ module.exports = {
             return true
         }
     },
+
     async findVeiculoAtAula (id) {
         const db = await Database()
 
@@ -155,6 +165,7 @@ module.exports = {
             return true
         }
     },
+
     async confereAgendaVeiculo (idVeiculo, data) {
         const db = await Database()
         
@@ -168,6 +179,7 @@ module.exports = {
             return true
         }
     },
+
     async confereAgendaInstrutor (idInstrutor, data) {
         const db = await Database()
         
@@ -181,6 +193,7 @@ module.exports = {
             return true
         }
     },
+    
     async confereAgendaAluno (idAluno, data) {
         const db = await Database()
         

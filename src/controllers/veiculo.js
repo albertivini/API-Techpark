@@ -4,10 +4,11 @@ const util = require('../utils')
 
 module.exports = {
     async show(req, res) {
-        const dados = await Veiculo.findAll()
 
+        const dados = await Veiculo.findAll()
         return res.render('veiculo', { dados })
     },
+
     async create(req, res) {
 
         const validaPlaca = util.testaPlaca(req.body.placa)
@@ -47,18 +48,17 @@ module.exports = {
             return res.send("Veículo não existe")
         }
     },
+
     async atualiza(req, res) {
 
         const dados = await Veiculo.findId(req.params.id)
-
         res.render('atualizaVeiculo', { dados } )
     
     },
+
     async update(req, res) {
         
         const id = req.params.id
-
-        console.log("dados vindo do front " + req.body.descricao + " id: " + id )
 
         await Veiculo.update({
             descricao: req.body.descricao,
@@ -67,6 +67,7 @@ module.exports = {
 
         return res.send("Veiculo atualizado")
     },
+    
     async delete(req, res) {
         const id = req.params.id
 

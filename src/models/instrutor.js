@@ -10,6 +10,7 @@ module.exports = {
 
         return data
     },
+
     async findCPF(cpf) {
         console.log("CPF que veio do front: " + cpf)
 
@@ -23,6 +24,7 @@ module.exports = {
             return data
         }
     },
+
     async create (cadastroInstrutor) {
         try {
             const db = await Database()
@@ -42,12 +44,11 @@ module.exports = {
             throw err
         }
     },
+
     async findId(id) {
         const db = await Database()
         const data = await db.get(`SELECT * FROM instrutor WHERE id = ${id}`)
         await db.close()
-
-        console.log("Dados recuperados do Id: " + data.nome )
 
         return data
     },
@@ -68,15 +69,15 @@ module.exports = {
             throw err
         }
     },
+
     async deleteInstrutor(id) {
         const db = await Database()
         db.run(`DELETE FROM instrutor WHERE id = ${id}`)
         db.close()
     },
+
     async mask(cpf) {
         const db = await Database()
-
-        console.log("Mascara para o CPF " + cpf)
 
         await db.run(`UPDATE instrutor
         SET cpf = SUBSTR(cpf,1,3) || '.' || SUBSTR(cpf,4,3) || '.' || SUBSTR(cpf,7,3) || '-' || SUBSTR(cpf,10,2) WHERE cpf = "${cpf}"`)

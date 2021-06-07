@@ -9,6 +9,7 @@ module.exports = {
 
         return res.render('instrutor', { data })
     },
+
     async create (req, res) {
 
         const validaCPF = util.testaCPF(req.body.cpf)
@@ -18,9 +19,7 @@ module.exports = {
             const cpfFormatado = util.formataCPF(req.body.cpf)
 
             const conferencia = await Instrutor.findCPF(cpfFormatado)
-    
-            console.log("Conferencia: " + conferencia)
-    
+        
             if(conferencia.cpf == cpfFormatado) {
                 return res.send("Instrutor já cadastrado")
             } else {
@@ -52,14 +51,14 @@ module.exports = {
             return res.send("CPF não existe")
         }
     },
+
     async atualiza (req, res) {
 
         const dados = await Instrutor.findId(req.params.id)
-
-        console.log("Dados chegaram no controller atualiza " + dados.nome)
-
         res.render('atualizaInstrutor', {dados})
+
     },
+
     async update (req, res) {
 
         const dados = {
@@ -69,12 +68,11 @@ module.exports = {
 
         const id = req.params.id
 
-        console.log("dados vindo do front " + dados.nome + "id: " + id )
-
         await Instrutor.update(dados, id)
 
         return res.send("Cadastro atualizado")
     },
+    
     async delete(req, res) {
         const id = req.params.id
         

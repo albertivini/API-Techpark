@@ -4,16 +4,20 @@ const moment = require('moment')
 
 module.exports = {
     async show (req, res) {
-        const dados = await Aula.findAll()
 
+        const dados = await Aula.findAll()
         return res.render('aula', { dados })
+
     },
+
     async moto (req, res) {
         return res.render('aulaMoto')
     },
+
     async carro (req, res) {
         return res.render('aulaCarro')
     },
+
     async aulacarro (req, res) {
 
         const cpf_instrutor = util.formataCPF(req.body.cpf_instrutor)
@@ -33,9 +37,6 @@ module.exports = {
             const Instrutor = await Aula.findInstrutor(cpf_instrutor)
             const Aluno = await Aula.findAluno(cpf_aluno)
             const Veiculo = await Aula.findVeiculo(placaUP)
-
-            console.log(req.body.data)
-            console.log(req.body.hora)
 
             const dataFront = moment(req.body.data).format('YYYY-MM-DD')
 
@@ -84,6 +85,7 @@ module.exports = {
                 }
             }
     },
+
     async aulamoto (req, res) {
 
         const cpf_instrutor = util.formataCPF(req.body.cpf_instrutor)
@@ -91,8 +93,6 @@ module.exports = {
         const placa = req.body.placa
 
         const placaUP = placa.toUpperCase()
-
-        console.log("Placa maiscula " + placaUP)
 
         const confInstrutor = await Aula.findInstrutor(cpf_instrutor)
         const confAluno = await Aula.findAluno(cpf_aluno)
@@ -105,9 +105,6 @@ module.exports = {
             const Instrutor = await Aula.findInstrutor(cpf_instrutor)
             const Aluno = await Aula.findAluno(cpf_aluno)
             const Veiculo = await Aula.findVeiculo(placaUP)
-
-            console.log(req.body.data)
-            console.log(req.body.hora)
 
             const dataFront = moment(req.body.data).format('YYYY-MM-DD')
 
@@ -156,6 +153,7 @@ module.exports = {
                 }
             }
     },
+    
     async relatorio (req, res) {
         
         const dados = await Aula.findId(req.params.id)
@@ -168,6 +166,7 @@ module.exports = {
 
         res.render('relatorioAula', { dados, instrutor, aluno, veiculo })
     },
+
     async presenca(req, res) {
         const dados = await Aula.findId(req.params.id)
 

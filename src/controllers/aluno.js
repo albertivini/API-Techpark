@@ -43,25 +43,20 @@ module.exports = {
             
                         return res.redirect('/aluno')
                     } catch (err) {
-    
+                        throw err
                     }
                 }
-    
             }
         } else {
             return res.send(" CPF não existe ")
         }
-
-
     },
 
     async atualiza (req, res) {
 
         const dados = await Aluno.findId(req.params.id)
-
-        console.log("Dados chegaram no controller atualiza " + dados.nome)
-
         return res.render('atualiza', {dados})
+
     },
 
     async update (req, res) {
@@ -73,12 +68,11 @@ module.exports = {
 
         const id = req.params.id
 
-        console.log("dados vindo do front " + dados.nome + "id: " + id )
-
         await Aluno.update(dados, id)
 
         return res.send("Cadastro atualizado")
     },
+    
     async delete(req, res) {
         const id = req.params.id
 

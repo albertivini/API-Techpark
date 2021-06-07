@@ -11,10 +11,9 @@ module.exports = {
 
         return data
     },
+
     async findPlaca(placa) {
         const db = await Database()
-
-        console.log("findPlaca " + placa)
         
         const data = await db.get(`SELECT placa FROM veiculos WHERE placa = "${placa}"`)
 
@@ -26,6 +25,7 @@ module.exports = {
             return data
         }
     },
+
     async create(cadastroVeiculo) {
 
         try {
@@ -49,6 +49,7 @@ module.exports = {
             throw err
         }
     },
+
     async findId(id) {
         const db = await Database()
         const data = await db.get(`SELECT * FROM veiculos WHERE id = ${id}`)
@@ -58,6 +59,7 @@ module.exports = {
 
         return data
     },
+
     async update(dados, id) {
         try{
             const db = await Database()
@@ -74,6 +76,7 @@ module.exports = {
             throw err
         }
     }, 
+    
     async deleteVeiculo(id) {
         const db = await Database()
         db.run(`DELETE FROM veiculos WHERE id = ${id}`)

@@ -14,11 +14,8 @@ module.exports = {
 
     async findCPF(cpf) {
 
-        console.log("CPF que veio do front: " + cpf)
-
         const db = await Database()
         const data = await db.get(`SELECT cpf FROM alunos WHERE cpf = "${cpf}"`)
-        // const data = await db.get(`SELECT *, REPLACE(REPLACE(REPLACE(cpf,'.', ''),'-', ''),'/', '') AS cpf_unmask FROM alunos WHERE cpf = "${cpf}"`)
         
         await db.close()
 
@@ -31,7 +28,6 @@ module.exports = {
     },
 
     async create(cadastro) {
-        console.log("Dados do cadastro: " + cadastro.cpf)
 
         try {
             const db = await Database()
@@ -57,16 +53,12 @@ module.exports = {
         const data = await db.get(`SELECT * FROM alunos WHERE id = ${id}`)
         await db.close()
 
-        console.log("Dados recuperados do Id: " + data.nome )
-
         return data
     },
 
     async update(dados, id) {
         try{
             const db = await Database()
-
-            console.log("Antes de fazer o update " + dados.nome + dados.cat + id)
 
             await db.run(` UPDATE alunos SET
             nome = "${dados.nome}",
@@ -78,6 +70,7 @@ module.exports = {
             throw err
         }
     },
+
     async mask(cpf) {
         const db = await Database()
 
@@ -88,6 +81,7 @@ module.exports = {
 
         await db.close()
     },
+    
     async deleteAluno(id) {
         const db = await Database()
         db.run(`DELETE FROM alunos WHERE id = ${id}`)

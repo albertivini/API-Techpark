@@ -1,9 +1,8 @@
 function separaCategoria(Categoria) {
 
     if (Categoria.length != 2 ) {
-
-        console.log("Separa categoria " + Categoria)
         return Categoria
+        
     } else {
         const Moto = Categoria.charAt(0)
         const Veiculo = Categoria.charAt(1)
